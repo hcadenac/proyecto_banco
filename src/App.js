@@ -5,6 +5,11 @@ import Barnav from './components/navegacion/Barnav';
 import Home from './components/Paginas/Home';
 import Personas from './components/Paginas/Personas';
 import AtencionCliente from './components/Paginas/AtencionCliente';
+import Registro from './components/Paginas/Registro';
+import Productos from './components/Paginas/Productos';
+import Login from './components/Paginas/Login';
+import GestionCliente from './components/Paginas/GestionCliente';
+
 
 function App() {
   return (
@@ -13,8 +18,10 @@ function App() {
         <Barnav />
         <Routes>
           <Route path='/Home' element={<Home />} />
-          {/* <Route path='/Productos' element={<Productos />} /> */}
-          <Route path='/Personas' element={<Personas />} />
+          <Route path='/Productos' element={<Productos />} /> 
+          <Route path='/Registro' element={<Registro />} />
+          <Route path='/Login' element={<Login />} />
+          <Route path='/GestionCliente' element={<GestionCliente />} />
           <Route path='/AtencionCliente' element={<AtencionCliente />} />
         </Routes>
       </Router>

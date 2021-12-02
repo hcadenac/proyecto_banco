@@ -14,8 +14,48 @@ code {
 
 #basic-nav-dropdown{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 14px;
-  color: #5faf0f;
+  font-size: 16px;
+  color: #009A48;
   margin-right: 50px;
 }
+/* #text-label{
+  text-align: left;
+  float: left;
+} */
+#container-reg {
+  width: 100%;
+}
+.container-fluid {
+  width: 50%;
+  background-color:  #edf3e7 ;
+  margin: auto;
+}
+.Container-tabla{
+  width: 90%;
+  margin-left: 35px;
+  border: 1px solid;
+  padding: 10px;
+}
+#boton-insert{
+  float: right;
+}
+div.derecha {
+  width: auto;
+  float: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+} 
+#titulo1{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 24px;
+  color: #009A48;
+  text-align: center;
+}
+#tituloC{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 26px;
+  font-style: bold;
+  color: rgba(8, 4, 1, 0.952);
+}
+
 
