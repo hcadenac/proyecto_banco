@@ -6,13 +6,14 @@ const Productos = () => {
     return (
         <div>
         <br />
-       <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-        <Row>
+       <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">     
+        <Row>   
             <Col sm={3}>
+            <div id="panelOpcion">
             <h4>Opciones</h4>
-            <br />
-            <ListGroup>
-                <ListGroup.Item action variant="success" href="#link1">
+            <br />      
+            <ListGroup >
+                <ListGroup.Item  id="boton-item" action variant="success" href="#link1">
                 Solicitar Credito
                 </ListGroup.Item>
                 <ListGroup.Item action variant="secondary" href="#link2">
@@ -28,11 +29,13 @@ const Productos = () => {
                 Simular pago de una Cuota
                 </ListGroup.Item>
             </ListGroup>
+            </div>
             </Col>
+            
             <Col sm={9}>
             <Tab.Content>
                 <Tab.Pane eventKey="#link1">
-                <h2>Solicitud de credito de libre inversion </h2>
+                <h2 id="titulo1">Solicitud de credito de libre inversion </h2>
                 <hr />
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -51,13 +54,13 @@ const Productos = () => {
                         <Form.Control type="text" placeholder="" />
                         </Col>
                     </Form.Group>
-                    <Button variant="success" type="submit">
+                    <Button id="boton-opcion" variant="success" type="submit">
                         Enviar Solicitud
                     </Button>
                 </Form>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link2">
-                <h2>Solicitud de Prorroga del credito</h2>
+                <h2 id="titulo1">Solicitud de Prorroga del credito</h2>
                 <hr />
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -83,13 +86,13 @@ const Productos = () => {
                         <Form.Control as="textarea" rows={3} />
                         </Col>
                     </Form.Group>
-                    <Button variant="success" type="submit">
+                    <Button id="boton-opcion" variant="success" type="submit">
                         Enviar Solicitud
                     </Button>
                 </Form>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link3">
-                <h2>Generar historial de pagos</h2>
+                <h2 id="titulo1">Generar historial de pagos</h2>
                 <hr />
                 <Table striped bordered hover size="sm">
                     <thead>
@@ -123,20 +126,20 @@ const Productos = () => {
                 </Table>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link4">
-                <h2>Certificados de pagos</h2>
+                <h2 id="titulo1">Certificados de pagos</h2>
                 <hr />
                 <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                     <Form.Label>Certificado</Form.Label>
                     <Form.Control as="textarea" rows={3} />
                 </Form.Group>
-                    <Button variant="success" type="submit">
+                    <Button id="boton-opcion" variant="success" type="submit">
                         Generar Certificado
                     </Button>
                 </Form>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link5">
-                <h2>Simulacion pago de cuota</h2>
+                <h2 id="titulo1">Simulacion pago de cuota</h2>
                 <hr />
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -163,7 +166,7 @@ const Productos = () => {
                         <Form.Control type="text" placeholder="" />
                         </Col>
                     </Form.Group>
-                    <Button variant="success" type="submit">
+                    <Button id="boton-opcion" variant="success" type="submit">
                         Enviar Solicitud
                     </Button>
                 </Form>

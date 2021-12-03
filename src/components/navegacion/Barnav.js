@@ -11,7 +11,7 @@ const Barnav = () =>{
     return (
         <div>
             <>
-                <Navbar bg="light" variant="light">
+                <Navbar id="navbar" bg="light" variant="light">
                     <Container>
                         <Navbar.Brand href="#home" >
                         <img

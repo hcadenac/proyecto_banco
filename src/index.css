@@ -11,17 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+#navbar{
+  border-bottom: 1px solid;
+}
 #basic-nav-dropdown{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 16px;
   color: #009A48;
   margin-right: 50px;
 }
-/* #text-label{
-  text-align: left;
-  float: left;
-} */
 #container-reg {
   width: 100%;
 }
@@ -36,8 +34,24 @@ code {
   border: 1px solid;
   padding: 10px;
 }
+#panelOpcion{
+  width: auto;
+  height: 500px;
+  background-color: #e0f5ea;
+  border-style: groove;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 5px;
+}
 #boton-insert{
   float: right;
+}
+/* #boton-item{
+margin-bottom: 300px;
+} */
+#boton-opcion{
+  display: block; 
+  margin: 0 auto;
 }
 div.derecha {
   width: auto;
