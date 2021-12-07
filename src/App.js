@@ -9,6 +9,7 @@ import Registro from './components/Paginas/Registro';
 import Productos from './components/Paginas/Productos';
 import Login from './components/Paginas/Login';
 import GestionCliente from './components/Paginas/GestionCliente';
+import GestionSolicitudes from './components/Paginas/GestionSolicitudes';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path='/Registro' element={<Registro />} />
           <Route path='/Login' element={<Login />} />
           <Route path='/GestionCliente' element={<GestionCliente />} />
+          <Route path='/GestionSolicitudes' element={<GestionSolicitudes />} />
           <Route path='/AtencionCliente' element={<AtencionCliente />} />
         </Routes>
       </Router>

@@ -32,7 +32,7 @@ const Barnav = () =>{
                             <Nav.Link as={Link} to={"/Login"} id="basic-nav-dropdown"><FontAwesomeIcon icon={faHeadset} />  Atencion al cliente</Nav.Link>
                             <NavDropdown title={titlePersonas} id="basic-nav-dropdown">
                                 <NavDropdown.Item as={Link} to={"/GestionCliente"}>Gestion Clientes </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Gestion Creditos</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to={"/GestionSolicitudes"}>Gestion Creditos</NavDropdown.Item>
                                 </NavDropdown>
                             {/* <Nav.Link as={Link} to={"/Login"} id="basic-nav-dropdown"><FontAwesomeIcon icon={faUserAlt} />  Banca Personas</Nav.Link> */}
                         </Nav>
