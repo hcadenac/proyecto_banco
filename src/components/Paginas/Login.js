@@ -2,6 +2,9 @@
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Fragment, useState } from 'react';
+//import axios from 'axios';
+const axios = require('axios');
+
 
 const Login = () => {
 
@@ -19,13 +22,23 @@ const Login = () => {
         })
     }
 
-    const enviarDatos = (event) => {
+    const enviarDatos = async (event) => {
         event.preventDefault()
+        await axios.post('http://localhost:9000/api/solicituds', {
+            "documento": 454333,
+            "valor": 4356000,
+            "tiempo": 14
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
         console.log('enviando datos...' + datos.nombre + ' ' + datos.apellido)
-        if (datos.nombre == 'carlos'){
+        if (datos.nombre === 'carlos'){
             window.location.href="./GestionCliente";
         }
-        
     }
 
     return (
@@ -40,7 +53,7 @@ const Login = () => {
                         
                             <div className="card-body">
                             <div className="col"> 
-                                <img src='/imagen2.jpg' style={{ marginLeft: 55, paddingRight: 5, width: 150, }}  /> 
+                                <img src='/imagen2.jpg' alt='Imagen logo' style={{ marginLeft: 55, paddingRight: 5, width: 150, }}  /> 
                             </div>
                                 <h5 className="card-title">Ingresa a tu zona transaccional</h5>
                                 <br />
@@ -51,7 +64,6 @@ const Login = () => {
                                         <input 
                                         type="text" 
                                         placeholder="Usuario" 
-                                        
                                         className="form-control" 
                                         onChange={handleInputChange} 
                                         name="nombre" />

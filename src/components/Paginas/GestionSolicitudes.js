@@ -1,8 +1,53 @@
-import React from "react";
+//import React from "react";
 import { Tab, ListGroup, Col, Row, Table, Form, Button} from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+const axios = require('axios');
 
 const GestionSolicitudes = () => {
+
+    const [list, setList] = useState([]);
+    const [resultado, setResultado] = useState([]);
+    
+    const [dato, setDato] = useState({
+        documento: '',
+        // apellido: ''
+    })
+    const handleInputChange = (event) => {
+        // console.log(event.target.name)
+        // console.log(event.target.value)
+        setDato({
+            ...dato,
+            [event.target.name] : event.target.value
+        })
+    }
+   
+    const enviarDatosC = async (event) => {
+        event.preventDefault()
+        
+        const response = await axios.get('http://localhost:9000/api/users');
+        console.log(response);                
+        setList(response.data);
+        const filterResults = list.filter(item=>item.documento === 232323);
+        setDato(filterResults);
+        console.log(resultado);
+           
+    }
+    
+
+  const editar=()=>{
+
+    axios.get('http://localhost:9000/api/users')
+    .then(function (response) {
+        console.log(response);
+        
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
+  }
+
     return (
         <div>
         <br />
@@ -34,13 +79,18 @@ const GestionSolicitudes = () => {
                 <Tab.Pane eventKey="#link1">
                 <h2 id="titulo1">Solicitud de credito de libre inversion </h2>
                 <hr />
-                <Form>
+                <Form onSubmit={enviarDatosC}>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
                         <Form.Label column sm="3">
                         Identificacion del Cliente
                         </Form.Label>
                         <Col sm="7">
-                        <Form.Control type="text" placeholder="" />
+                        <Form.Control 
+                        type="text" 
+                        placeholder=""
+                        name="documento"
+                        onChange={handleInputChange}  
+                        />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -48,7 +98,11 @@ const GestionSolicitudes = () => {
                         Nombre del Cliente
                         </Form.Label>
                         <Col sm="7">
-                        <Form.Control type="text" placeholder="" />
+                        <Form.Control 
+                        type="text" 
+                        placeholder="" 
+                        value={dato[1]}
+                        />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -85,13 +139,16 @@ const GestionSolicitudes = () => {
                     </Form.Group>
                     <Row sm="5">
                     <Button id="boton-opcion" variant="success" type="submit">
-                        Aprobar Solicitud
+                        Gestionar  Solicitud
                     </Button>
                     <Button id="boton-opcion" variant="success" type="submit">
                         Rechazar Solicitud
                     </Button>
                     </Row>
                 </Form>
+                    <ul>
+                        <li>{dato.documento}</li>
+                    </ul>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link2">
                 <h2 id="titulo1">Solicitud de Prorroga del credito</h2>

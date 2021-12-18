@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Barnav from './components/navegacion/Barnav'; 
 import Home from './components/Paginas/Home';
-import Personas from './components/Paginas/Personas';
+//import Personas from './components/Paginas/Personas';
 import AtencionCliente from './components/Paginas/AtencionCliente';
 import Registro from './components/Paginas/Registro';
 import Productos from './components/Paginas/Productos';

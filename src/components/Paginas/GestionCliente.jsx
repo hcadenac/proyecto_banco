@@ -1,11 +1,31 @@
-// import logo from './logo.svg';
-// import './App.css';
+
+import { faPenSquare, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+// import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import 'bootstrap';
-import React, { useState } from 'react';
-// import { Modal, Button, Label, FormGroup} from 'react-bootstrap';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label} from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+const axios = require('axios');
+
 
 function GestionCliente() {
+
+  const [list, setList] = useState([]);
+    
+  async function getUser() {
+      try {
+        const response = await axios.get('http://localhost:9000/api/users');
+        console.log(response);
+        // const datas = response.data
+        setList(response.data)
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+  useEffect(() =>{
+      getUser()
+  }, [])
 
   const dataClientes = [
     { id: 1, nombre: "Mario Garcia", documento: "Cedula", numero: 123456, nacimiento: '01-01-1990', expedicion: '01-01-2008', ingresos: 5000000, egresos: 1500000 },
@@ -13,16 +33,16 @@ function GestionCliente() {
     { id: 3, nombre: "Pedro Perez", documento: "Cedula", numero: 323245, nacimiento: '01-10-1980', expedicion: '01-01-2000', ingresos: 3000000, egresos: 1000000 },
   ];
 
-  const [data, setData] = useState(dataClientes);
+  const [data, setData] = useState(list);
   const [modalEditar, setModalEditar] = useState(false);
   const [modalEliminar, setModalEliminar] = useState(false);
   const [modalInsertar, setModalInsertar] = useState(false);
 
   const [selectCliente, setselectCliente] = useState({
-    id: '',
+    //id: '',
     nombre: '',
+    tipodoc: '',
     documento: '',
-    numero: '',
     nacimiento: '',
     expedicion: '',
     ingresos: '',
@@ -44,11 +64,12 @@ function GestionCliente() {
 
   const editar=()=>{
     var dataNueva=data;
+    var valorEditar=selectCliente;
     dataNueva.map(cliente=>{
-      if(cliente.id===selectCliente.id){
+      if(cliente.id===selectCliente._id){
         cliente.nombre=selectCliente.nombre;
+        cliente.tipodoc=selectCliente.tipodoc;
         cliente.documento=selectCliente.documento;
-        cliente.numero=selectCliente.numero;
         cliente.nacimiento=selectCliente.nacimiento;
         cliente.expedicion=selectCliente.expedicion;
         cliente.ingresos=selectCliente.ingresos;
@@ -56,11 +77,30 @@ function GestionCliente() {
       }
     });
     setData(dataNueva);
+    console.log(valorEditar)
+    console.log(valorEditar._id)
+    axios.put('http://localhost:9000/api/users/'+valorEditar._id, valorEditar)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    getUser()
     setModalEditar(false);
   }
 
   const eliminar =()=>{
-    setData(data.filter(cliente=>cliente.id!==selectCliente.id));
+    var valorEditar=selectCliente;
+    axios.delete('http://localhost:9000/api/users/'+valorEditar._id, valorEditar)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    getUser()
+    // setData(data.filter(cliente=>cliente.id!==selectCliente.id));
     setModalEliminar(false);
   }
 
@@ -71,10 +111,18 @@ function GestionCliente() {
 
   const insertar =()=>{
     var valorInsertar=selectCliente;
-    valorInsertar.id=data[data.length-1].id+1;
-    var dataNueva = data;
-    dataNueva.push(valorInsertar);
-    setData(dataNueva);
+    axios.post('http://localhost:9000/api/users', valorInsertar)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    //valorInsertar.id=data[data.length-1].id+1;
+    //var dataNueva = data;
+    //dataNueva.push(valorInsertar);
+    //setData(dataNueva);
+    getUser()
     setModalInsertar(false);
   }
 
@@ -88,7 +136,7 @@ function GestionCliente() {
     <div className="Container-tabla">
     <button id="boton-insert"className="btn btn-success" onClick={()=>abrirModalInsertar()}>Registrar Cliente</button>
     <br /><br />
-    <div class="table-responsive">
+    <div className="table-responsive">
       <table className="table table-bordered border-Secondary table-hover">
         <thead>
           <tr>
@@ -105,18 +153,18 @@ function GestionCliente() {
           </tr>
         </thead>
         <tbody>
-          {data.map(elemento=>(
+          {list.map(elemento=>(
             <tr>
-              <td>{elemento.id}</td>
+              <td>{elemento._id}</td>
               <td>{elemento.nombre}</td>
+              <td>{elemento.tipodoc}</td>
               <td>{elemento.documento}</td>
-              <td>{elemento.numero}</td>
               <td>{elemento.nacimiento}</td>
               <td>{elemento.expedicion}</td>
               <td>{elemento.ingresos}</td>
               <td>{elemento.egresos}</td>
-              <td><button className="btn btn-primary" onClick={()=>clienteSelect(elemento, 'Editar')}>Editar</button> {"   "} 
-              <button className="btn btn-danger" onClick={()=>clienteSelect(elemento, 'Eliminar')}>Eliminar</button></td>
+              <td><button className="btn btn-primary" onClick={()=>clienteSelect(elemento, 'Editar')}><FontAwesomeIcon icon={faPenSquare}/></button> {"   "} 
+              <button className="btn btn-danger" onClick={()=>clienteSelect(elemento, 'Eliminar')}><FontAwesomeIcon icon={faTrashAlt} /></button></td>
             </tr>
           ))
           }
@@ -124,6 +172,8 @@ function GestionCliente() {
       </table>
       </div>
     </div>
+
+     {/* /////editar clientes//// */}
       <Modal isOpen={modalEditar}>
         <ModalHeader>
           <div>
@@ -138,7 +188,7 @@ function GestionCliente() {
               readOnly
               type="text"
               name="id"
-              value={selectCliente && selectCliente.id}
+              value={selectCliente && selectCliente._id}
             />
             <br />
 
@@ -152,12 +202,12 @@ function GestionCliente() {
             />
             {/* <br /> */}
 
-            <label>Documento</label>
+            <label>Tipo Documento</label>
             <input
               className="form-control"
               type="text"
-              name="documento"
-              value={selectCliente && selectCliente.documento}
+              name="tipodoc"
+              value={selectCliente && selectCliente.tipodoc}
               onChange={handleChange}
             />
             {/* <br /> */}
@@ -165,8 +215,8 @@ function GestionCliente() {
             <input
               className="form-control"
               type="text"
-              name="numero"
-              value={selectCliente && selectCliente.numero}
+              name="documento"
+              value={selectCliente && selectCliente.documento}
               onChange={handleChange}
             />
             <label>Fecha Nacimiento</label>
@@ -216,7 +266,7 @@ function GestionCliente() {
         </ModalFooter>
       </Modal>
 
-
+ {/* /////eliminar clientes//// */}
       <Modal isOpen={modalEliminar}>
         <ModalBody>
           Estás Seguro que deseas eliminar el cliente {selectCliente && selectCliente.nombre}
@@ -234,7 +284,7 @@ function GestionCliente() {
         </ModalFooter>
       </Modal>
 
-
+    {/* /////insertar clientes//// */}
         <Modal isOpen={modalInsertar}>
         <ModalHeader>
           <div>
@@ -249,7 +299,7 @@ function GestionCliente() {
               readOnly
               type="text"
               name="id"
-              value={data[data.length-1].id+1}
+              // value={data[data.length-1].id+1}
             />
             <br />
             <label>Nombre</label>
@@ -264,16 +314,16 @@ function GestionCliente() {
             <input
               className="form-control"
               type="text"
-              name="documento"
-              value={selectCliente ? selectCliente.documento: ''}
+              name="tipodoc"
+              value={selectCliente ? selectCliente.tipodoc: ''}
               onChange={handleChange}
             />
             <label>Numero</label>
             <input
               className="form-control"
               type="text"
-              name="numero"
-              value={selectCliente && selectCliente.numero}
+              name="documento"
+              value={selectCliente && selectCliente.documento}
               onChange={handleChange}
             />
             <label>Fecha Nacimiento</label>
