@@ -1,17 +1,29 @@
 //import React from "react";
-import { Tab, ListGroup, Col, Row, Table, Form, Button} from 'react-bootstrap';
-import { Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
+import { Button, Col, Form, ListGroup, Row, Tab, Table } from 'react-bootstrap';
 const axios = require('axios');
 
 const GestionSolicitudes = () => {
 
-    const [list, setList] = useState([]);
-    const [resultado, setResultado] = useState([]);
+    const [list, setList] = useState([{}]);
+    const [list2, setList2] = useState([{}]);
+    const [resultado, setResultado] = useState();
     
+
+    const [nombre, setNombre] = useState(' ')
+    const [valor, setValor] = useState('')
+    const [tiempo, setTiempo] = useState('')
+    const [ingreso, setIngreso] = useState()
+    const [egreso, setEgreso] = useState('')
+    const [cuota, setCuota] = useState('')
+    const [aprob, setAprob] = useState('')
+    
+    const [final, setfinal] = useState(true)
+    const [disponible, setDisponible] = useState('')
+
     const [dato, setDato] = useState({
         documento: '',
-        // apellido: ''
+        nombre: ''
     })
     const handleInputChange = (event) => {
         // console.log(event.target.name)
@@ -21,17 +33,69 @@ const GestionSolicitudes = () => {
             [event.target.name] : event.target.value
         })
     }
-   
-    const enviarDatosC = async (event) => {
-        event.preventDefault()
+    
+    useEffect(() => {
+        axios.get('http://localhost:9000/api/users').then((response) => {
+            setList(response.data);
+            console.log('lista '+list);
+            setfinal(true);
+        });
+
+        axios.get('http://localhost:9000/api/solicituds').then((response) => {
+            setList2(response.data);
+            console.log('lista '+list);
+        });
+      }, [setList]);
+
+
+      console.log('ingreso '+ingreso)
+
+
+
+    const enviarDatosC =  (event) => {
+       event.preventDefault()        
+        //const response = await axios.get('http://localhost:9000/api/users');
+        console.log(list);                
+        //setList(response.data);
+        console.log('el dato '+dato.documento)
+        const filterResults = list.filter(item=>item.documento == dato.documento);
         
-        const response = await axios.get('http://localhost:9000/api/users');
-        console.log(response);                
-        setList(response.data);
-        const filterResults = list.filter(item=>item.documento === 232323);
-        setDato(filterResults);
-        console.log(resultado);
-           
+        console.log('resultado '+filterResults);
+        //console.log("dato");
+        setNombre(filterResults.map(elemento=>(elemento.nombre)));
+        setIngreso(filterResults.map(elemento=>(elemento.ingresos)));
+        setEgreso(filterResults.map(elemento=>(elemento.egresos)));
+        var i = (filterResults.map(elemento=>(elemento.ingresos)));
+        var e = (filterResults.map(elemento=>(elemento.egresos)));
+        setAprob((i - e)*0.3);
+        /////
+        //console.log('ingreso '+ingreso)
+        //const response2 = await axios.get('http://localhost:9000/api/solicituds');
+        //setList2(response2.data);
+        //console.log(response2);   
+        const filterResults2 = list2.filter(item=>item.documento == 232323);
+        setValor(filterResults2.map(elemento=>(elemento.valor)));
+        setTiempo(filterResults2.map(elemento=>(elemento.tiempo)));
+               
+        const vCapital = (valor/tiempo);   
+        const deudaTotal = (valor - vCapital);    
+        const interes = (0.02*deudaTotal);
+        setCuota(interes + vCapital);       
+        setCuota(interes + vCapital); 
+        setAprob((filterResults.map(elemento=>(elemento.ingresos)) - filterResults.map(elemento=>(elemento.egresos)))*0.3);
+        
+       
+        console.log('ingresos : '+i)
+        console.log('aprobo : '+aprob)
+        //setDisponible = (Disponible);
+        //console.log('dispo'+fisponible);
+
+        if  (final ){
+            
+             setResultado(' CREDITO APROBADO');
+        }else {
+             setResultado(' CREDITO RECHAZADO');
+        }            
     }
     
 
@@ -101,7 +165,7 @@ const GestionSolicitudes = () => {
                         <Form.Control 
                         type="text" 
                         placeholder="" 
-                        value={dato[1]}
+                        value={nombre}
                         />
                         </Col>
                     </Form.Group>
@@ -110,7 +174,11 @@ const GestionSolicitudes = () => {
                         Valor solicitado
                         </Form.Label>
                         <Col sm="7">
-                        <Form.Control type="text" placeholder="" />
+                        <Form.Control 
+                        type="text" 
+                        placeholder="" 
+                        value={valor}
+                        />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -118,7 +186,11 @@ const GestionSolicitudes = () => {
                         Numero de cuotas
                         </Form.Label>
                         <Col sm="7">
-                        <Form.Control type="text" placeholder="" />
+                        <Form.Control 
+                        type="text" 
+                        placeholder="" 
+                        value={tiempo}
+                        />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -126,7 +198,10 @@ const GestionSolicitudes = () => {
                         Valor cuota mensual
                         </Form.Label>
                         <Col sm="7">
-                        <Form.Control type="text" placeholder="" />
+                        <Form.Control 
+                        type="text" 
+                        value={cuota}
+                        placeholder="" />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -134,9 +209,12 @@ const GestionSolicitudes = () => {
                         Tasa de Interes
                         </Form.Label>
                         <Col sm="7">
-                        <Form.Control type="text" placeholder="" />
+                        <Form.Control 
+                        type="text" 
+                        placeholder="" />
                         </Col>
                     </Form.Group>
+                    <h1>{resultado}</h1>
                     <Row sm="5">
                     <Button id="boton-opcion" variant="success" type="submit">
                         Gestionar  Solicitud

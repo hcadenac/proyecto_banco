@@ -1,5 +1,6 @@
 //import React from "react";
-import React, { useState, useEffect } from 'react';
+import React, { Component, useState } from 'react';
+import Alert from "react-bootstrap/Alert";
 import { Button, Col, Form, ListGroup, Row, Tab, Table } from 'react-bootstrap';
 const axios = require('axios');
 
@@ -24,6 +25,10 @@ const Productos = () => {
         razon:''
     })
 
+    const [datareporte, setDatareporte] = useState({
+        documento: '',
+    })
+
     const [list, setList] = useState([]);
     
     async function getUser() {
@@ -31,8 +36,9 @@ const Productos = () => {
           const response = await axios.get('http://localhost:9000/api/pagos');
           console.log(response);
           const datas = response.data
-          setList(datas)
-          console.log(response)
+          const filterResults = datas.filter(item=>item.documento == datareporte.documento);
+          setList(filterResults)
+          console.log(filterResults)
         } catch (error) {
           console.error(error);
         }
@@ -44,18 +50,19 @@ const Productos = () => {
        
     } 
     const [data, setData] = useState();
-
-    /* useEffect(() =>{
-        getUser()
-    }, []) */
-
-    
+   
     const handleInputChangeP = (event) => {
         // console.log(event.target.name)
         // console.log(event.target.value)
         setProrrogas({
             ...prorrogas,
             [event.target.name] : event.target.value
+        })
+    }
+    const handleInputChangeR = (event) => {
+    setDatareporte({
+        ...datareporte,
+        [event.target.name] : event.target.value
         })
     }
     const handleInputChange = (event) => {
@@ -68,7 +75,7 @@ const Productos = () => {
     }
 
     const enviarDatosC = async (event) => {
-        event.preventDefault()
+        //event.preventDefault()
         await axios.post('http://localhost:9000/api/solicituds', {
             "documento": creditos.documento,
             "valor": creditos.valor,
@@ -76,6 +83,12 @@ const Productos = () => {
           })
           .then(function (response) {
             console.log(response);
+            if (response.status == 200){
+                window.alert("solicitud enviada Correctamente");
+            }else{
+                window.alert("Error  enviando la Solicitud");
+                //window.location.href="./Productos";
+            }
           })
           .catch(function (error) {
             console.log(error);
@@ -84,7 +97,7 @@ const Productos = () => {
     }
 
     const enviarDatosP = async (event) => {
-        event.preventDefault()
+        //event.preventDefault()
         await axios.post('http://localhost:9000/api/prorrogas', {
             "documento": prorrogas.documento,
             "valor": prorrogas.valor,
@@ -93,14 +106,17 @@ const Productos = () => {
             })
             .then(function (response) {
             console.log(response);
+            if (response.status == 200){
+                window.alert("solicitud enviada Correctamente");
+            }else{
+                window.alert("Error  enviando la Solicitud");
+                //window.location.href="./Productos";
+            }
             })
             .catch(function (error) {
             console.log(error);
             });
-        console.log('enviando datos...' + creditos.nombre + ' ' + creditos.apellido)
-        /* if (creditos.nombre == 'carlos'){
-            window.location.href="./GestionCliente";
-      } */    
+        console.log('enviando datos...' + creditos.nombre + ' ' + creditos.apellido)   
     }
    
     return (
@@ -180,9 +196,9 @@ const Productos = () => {
                     <Button id="boton-opcion" variant="success" type="submit">
                         Enviar Solicitud
                     </Button>
-                    <li>{creditos.documento}</li>
+                  {/*  <li>{creditos.documento}</li>
                     <li>{creditos.valor}</li>
-                    <li>{creditos.cuotas}</li>
+                    <li>{creditos.cuotas}</li> */}
                 </Form>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link2">
@@ -243,23 +259,26 @@ const Productos = () => {
                     <Button id="boton-opcion" variant="success" type="submit">
                         Enviar Solicitud
                     </Button>
-                    <li>{prorrogas.documento}</li>
-                    <li>{prorrogas.valor}</li>
-                    <li>{prorrogas.cuotas}</li>
-                    <li>{prorrogas.razon}</li>
                 </Form>
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link3">
                 <h2 id="titulo1">Generar historial de pagos</h2>
                 <hr />
-
-               {  <ul>
-                        {
-                            list.map(item =>(
-                                <li>key ={item.id} {item.documento}</li>
-                            ))
-                        }
-                    </ul> }
+                <form>
+                <Form.Group as={Row} className="mb-3" controlId="formPlaintext">
+                        <Form.Label column sm="3">
+                        Ingrese el Documento:
+                        </Form.Label>
+                        <Col sm="7">
+                        <Form.Control 
+                        type="text" 
+                        placeholder="" 
+                        onChange={handleInputChangeR} 
+                        name="documento"
+                        />
+                        </Col>
+                    </Form.Group>
+                </form>
 
                 <Table striped bordered hover size="sm">
                     <thead>
@@ -284,6 +303,7 @@ const Productos = () => {
                     </tbody>
                 </Table>
                 <Form onSubmit={obtenerDatos}>
+                
                     <Button id="boton-opcion" variant="success" type="submit">
                         Generar Reporte
                     </Button>

@@ -46,7 +46,8 @@ function GestionCliente() {
     nacimiento: '',
     expedicion: '',
     ingresos: '',
-    egresos: ''
+    egresos: '',
+    contrasena: ''
   });
 
   const clienteSelect=(elemento, caso)=>{
@@ -111,6 +112,7 @@ function GestionCliente() {
 
   const insertar =()=>{
     var valorInsertar=selectCliente;
+    console.log('lista : '+selectCliente);
     axios.post('http://localhost:9000/api/users', valorInsertar)
           .then(function (response) {
             console.log(response);
@@ -251,6 +253,14 @@ function GestionCliente() {
               value={selectCliente && selectCliente.egresos}
               onChange={handleChange}
             />
+            <label>contraseña</label>
+            <input
+              className="form-control"
+              type="password"
+              name="contrasena"
+              value={selectCliente && selectCliente.contrasena}
+              onChange={handleChange}
+            />
           </div>
         </ModalBody>
         <ModalFooter>
@@ -356,6 +366,14 @@ function GestionCliente() {
               type="text"
               name="egresos"
               value={selectCliente && selectCliente.egresos}
+              onChange={handleChange}
+            />
+             <label>contraseña</label>
+            <input
+              className="form-control"
+              type="password"
+              name="contrasena"
+              value={selectCliente && selectCliente.contrasena}
               onChange={handleChange}
             />
             <br />

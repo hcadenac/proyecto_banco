@@ -24,22 +24,7 @@ const Login = () => {
 
     const enviarDatos = async (event) => {
         event.preventDefault()
-        await axios.post('http://localhost:9000/api/solicituds', {
-            "documento": 454333,
-            "valor": 4356000,
-            "tiempo": 14
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-        console.log('enviando datos...' + datos.nombre + ' ' + datos.apellido)
-        if (datos.nombre === 'carlos'){
-            window.location.href="./GestionCliente";
         }
-    }
 
     return (
         <Fragment>
