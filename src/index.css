@@ -71,5 +71,12 @@ div.derecha {
   font-style: bold;
   color: rgba(8, 4, 1, 0.952);
 }
+h1{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 26px;
+  font-style: bold;
+  text-align: center;
+  color: rgba(233, 12, 45, 0.952);
+}
 
 

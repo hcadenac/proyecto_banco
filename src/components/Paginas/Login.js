@@ -9,10 +9,14 @@ const axios = require('axios');
 const Login = () => {
 
     const [datos, setDatos] = useState({
-        nombre: '',
-        apellido: ''
+        documento: '',
+        contrasena: ''
     })
 
+    const [lista, setLista] = useState([{}]);
+    const [usuario, setUsuario] = useState({});
+    const [clave, setClave] = useState('');
+    const [mensaje, setMensaje] = useState();
     const handleInputChange = (event) => {
         // console.log(event.target.name)
         // console.log(event.target.value)
@@ -21,13 +25,32 @@ const Login = () => {
             [event.target.name] : event.target.value
         })
     }
-
+   
     const enviarDatos = async (event) => {
         event.preventDefault()
+        await axios.get('http://localhost:9000/api/users').then((response) => {
+            setLista(response.data);
+            console.log(response.data);
+            //console.log('lista '+lista);
+            const filterResults = lista.filter(item=>item.documento == datos.documento);
+            const p2 =filterResults.map(elemento=>(elemento.documento));
+            console.log(p2[0]);
+            const p1 = filterResults.map(elemento=>(elemento.contrasena));
+            console.log(p1[0]);
+            //console.log('usuario '+usuario);
+            //console.log('clave '+clave);
+            //console.log(filterResults.map(elemento=>(elemento.contrasena)));
+            if (p1[0] == datos.contrasena){
+                window.location.href="./Productos";
+            }else{
+                setMensaje('Usuario o contraseña incorrectos');
+            }
+        });
         }
 
     return (
         <Fragment>
+            <h1>{mensaje}</h1>
         <div className="container-fluid">
             <div className="row login justify-content-center">
                 <div className="derecha">
@@ -51,7 +74,7 @@ const Login = () => {
                                         placeholder="Usuario" 
                                         className="form-control" 
                                         onChange={handleInputChange} 
-                                        name="nombre" />
+                                        name="documento" />
                                     </div>
                                     <label for="usuario1" id="text-label" className="form-label">Contraseña</label>
                                     <div className="col-auto">
@@ -60,7 +83,7 @@ const Login = () => {
                                         placeholder="Password" 
                                         className="form-control" 
                                         onChange={handleInputChange} 
-                                        name="apellido" />
+                                        name="contrasena" />
                                     </div>
                                     <br />
                                 

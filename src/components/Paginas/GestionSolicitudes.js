@@ -16,6 +16,7 @@ const GestionSolicitudes = () => {
     const [ingreso, setIngreso] = useState()
     const [egreso, setEgreso] = useState('')
     const [cuota, setCuota] = useState('')
+    const [int, setInt] = useState('')
     const [aprob, setAprob] = useState('')
     
     const [final, setfinal] = useState(true)
@@ -41,8 +42,8 @@ const GestionSolicitudes = () => {
             setfinal(true);
         });
 
-        axios.get('http://localhost:9000/api/solicituds').then((response) => {
-            setList2(response.data);
+        axios.get('http://localhost:9000/api/solicituds').then((response2) => {
+            setList2(response2.data);
             console.log('lista '+list);
         });
       }, [setList]);
@@ -73,15 +74,16 @@ const GestionSolicitudes = () => {
         //const response2 = await axios.get('http://localhost:9000/api/solicituds');
         //setList2(response2.data);
         //console.log(response2);   
-        const filterResults2 = list2.filter(item=>item.documento == 232323);
+        const filterResults2 = list2.filter(item=>item.documento == dato.documento);
         setValor(filterResults2.map(elemento=>(elemento.valor)));
         setTiempo(filterResults2.map(elemento=>(elemento.tiempo)));
                
         const vCapital = (valor/tiempo);   
         const deudaTotal = (valor - vCapital);    
         const interes = (0.02*deudaTotal);
-        setCuota(interes + vCapital);       
-        setCuota(interes + vCapital); 
+        const tcuota  = (interes + vCapital);
+        setCuota(tcuota);
+        setInt('2% mensual')
         setAprob((filterResults.map(elemento=>(elemento.ingresos)) - filterResults.map(elemento=>(elemento.egresos)))*0.3);
         
        
@@ -91,11 +93,10 @@ const GestionSolicitudes = () => {
         //console.log('dispo'+fisponible);
 
         if  (final ){
-            
              setResultado(' CREDITO APROBADO');
-        }else {
-             setResultado(' CREDITO RECHAZADO');
-        }            
+        }// }else {
+        //      setResultado(' CREDITO RECHAZADO');
+        // }            
     }
     
 
@@ -111,7 +112,6 @@ const GestionSolicitudes = () => {
     });
 
   }
-
     return (
         <div>
         <br />
@@ -144,6 +144,7 @@ const GestionSolicitudes = () => {
                 <h2 id="titulo1">Solicitud de credito de libre inversion </h2>
                 <hr />
                 <Form onSubmit={enviarDatosC}>
+                    <h1>{resultado}</h1>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
                         <Form.Label column sm="3">
                         Identificacion del Cliente
@@ -211,22 +212,23 @@ const GestionSolicitudes = () => {
                         <Col sm="7">
                         <Form.Control 
                         type="text" 
+                        value={int}
                         placeholder="" />
                         </Col>
                     </Form.Group>
-                    <h1>{resultado}</h1>
+                   
                     <Row sm="5">
                     <Button id="boton-opcion" variant="success" type="submit">
                         Gestionar  Solicitud
                     </Button>
-                    <Button id="boton-opcion" variant="success" type="submit">
+                    {/* <Button id="boton-opcion" variant="success" type="submit">
                         Rechazar Solicitud
-                    </Button>
+                    </Button> */}
                     </Row>
                 </Form>
-                    <ul>
+                    {/* <ul>
                         <li>{dato.documento}</li>
-                    </ul>
+                    </ul> */}
                 </Tab.Pane>
                 <Tab.Pane eventKey="#link2">
                 <h2 id="titulo1">Solicitud de Prorroga del credito</h2>
@@ -265,11 +267,11 @@ const GestionSolicitudes = () => {
                     </Form.Group>
                     <Row sm="5">
                     <Button id="boton-opcion" variant="success" type="submit">
-                        Aprobar Solicitud
+                        Gestionar Solicitud
                     </Button>
-                    <Button id="boton-opcion" variant="success" type="submit">
+                    {/* <Button id="boton-opcion" variant="success" type="submit">
                         Rechazar Solicitud
-                    </Button>
+                    </Button> */}
                     </Row>
                 </Form>
                 </Tab.Pane>
